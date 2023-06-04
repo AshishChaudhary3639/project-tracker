@@ -1,0 +1,269 @@
+import React, { useState } from "react";
+import { Box, Button, Flex, Input, useToast } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
+import { addProject } from "../redux/action";
+import axios from "axios";
+const AddProject = () => {
+  const [projectName, setProjectName] = useState("");
+  const [reason, setReason] = useState("");
+  const [type, setType] = useState("");
+  const [division, setDivision] = useState("");
+  const [category, setCategory] = useState("");
+  const [priority, setPriority] = useState("");
+  const [department, setDepartment] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [location, setLocation] = useState("");
+  const toast = useToast()
+  const dispatch = useDispatch();
+
+  const handleSubmit = () => {
+    if (
+      projectName &&
+      reason &&
+      type &&
+      division &&
+      category &&
+      priority &&
+      department &&
+      startDate &&
+      endDate &&
+      location
+    ) {
+      let payload = {
+        projectName,
+        reason,
+        type,
+        division,
+        category,
+        priority,
+        department,
+        startDate,
+        endDate,
+        location,
+      };
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFzaGlzaEBnbWFpbC5jb20iLCJpYXQiOjE2ODU2MDU0NjN9.YXJxqkisgB1w8vMEmODKOZFZxpRFSl6jPrUi0vSuYac";
+
+      axios
+        .post("http://localhost:8080/createproject", payload, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+          console.log(res.data.success)
+          if(res.data.success==="project add successfuly"){
+            toast({
+              title: 'Project added.',
+              description: "We've added your project",
+              status: 'success',
+              duration: 9000,
+              isClosable: true,
+            })
+          }else{
+            toast({
+              title: 'Project not added.',
+              description: "We could not your project",
+              status: 'error',
+              duration: 9000,
+              isClosable: true,
+            })
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        });
+    }
+  };
+  return (
+    <>
+    
+      <Flex w={`95%`} m={`auto`} justify={`space-between`} mt={`1rem`}>
+        <Input
+          value={projectName}
+          type="text"
+          placeholder="Project name"
+          w={`60%`}
+          border={`1px solid lightgray`}
+          outline={`none`}
+          padding={`5px`}
+          borderRadius={`7px`}
+          h={`50px`}
+          onChange={(e) => setProjectName(e.target.value)}
+        />
+        <Button
+          border={`1px solid lightgray`}
+          w={`150px`}
+          h={`40px`}
+          borderRadius={`20px`}
+          bgColor={`#025aab`}
+          color={`white`}
+          onClick={handleSubmit}
+        >
+          Save Project
+        </Button>
+      </Flex>
+      <Flex w={`95%`} m={`auto`} gap={30} mt={`2rem`}>
+        <select
+          style={{
+            border: `1px solid lightgray`,
+            borderRadius: "7px",
+            width: "29%",
+            height: "40px",
+            outline: "none",
+          }}
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+        >
+          <option>Select Reason</option>
+          <option value="business">For Business</option>
+          <option value="education">Education</option>
+          <option value="option2">Option 2</option>
+          <option value="option3">Option 3</option>
+        </select>
+        <select
+          style={{
+            height: "40px",
+            border: `1px solid lightgray`,
+            borderRadius: "7px",
+            width: "29%",
+            outline: "none",
+          }}
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+        >
+          <option>Select Internal</option>
+          <option value="internal">Internal</option>
+          <option value="option1">Option 1</option>
+          <option value="option2">Option 2</option>
+          <option value="option3">Option 3</option>
+        </select>
+        <select
+          style={{
+            height: "40px",
+            border: `1px solid lightgray`,
+            borderRadius: "7px",
+            width: "29%",
+            outline: "none",
+          }}
+          value={division}
+          onChange={(e) => setDivision(e.target.value)}
+        >
+          <option>Select Filters</option>
+          <option value="filter">Filters</option>
+          <option value="option1">Option 1</option>
+          <option value="option2">Option 2</option>
+          <option value="option3">Option 3</option>
+        </select>
+      </Flex>
+      <Flex w={`95%`} m={`auto`} gap={30} mt={`2rem`}>
+        <select
+          style={{
+            border: `1px solid lightgray`,
+            borderRadius: "7px",
+            width: "29%",
+            height: "40px",
+            outline: "none",
+          }}
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option>Select Category</option>
+          <option value="A">Quality A</option>
+          <option value="B">Quality B</option>
+          <option value="C">Quality C</option>
+          <option value="D">Quality D</option>
+        </select>
+        <select
+          style={{
+            height: "40px",
+            border: `1px solid lightgray`,
+            borderRadius: "7px",
+            width: "29%",
+            outline: "none",
+          }}
+          value={priority}
+          onChange={(e) => setPriority(e.target.value)}
+        >
+          <option>Select Priority</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+          <option value="option3">Option 3</option>
+        </select>
+        <select
+          style={{
+            height: "40px",
+            border: `1px solid lightgray`,
+            borderRadius: "7px",
+            width: "29%",
+            outline: "none",
+          }}
+          value={department}
+          onChange={(e) => setDepartment(e.target.value)}
+        >
+          <option>Select Department</option>
+          <option value="strategy">Strategy</option>
+          <option value="option1">Option 1</option>
+          <option value="option2">Option 2</option>
+          <option value="option3">Option 3</option>
+        </select>
+      </Flex>
+      <Flex w={`95%`} m={`auto`} gap={30} mt={`2rem`}>
+        <input
+          type="date"
+          placeholder="Start date"
+          style={{
+            border: `1px solid lightgray`,
+            borderRadius: "7px",
+            width: "29%",
+            height: "40px",
+            outline: "none",
+          }}
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+        />
+
+        <input
+          type="date"
+          style={{
+            height: "40px",
+            border: `1px solid lightgray`,
+            borderRadius: "7px",
+            width: "29%",
+            outline: "none",
+          }}
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+        />
+
+        <select
+          style={{
+            height: "40px",
+            border: `1px solid lightgray`,
+            borderRadius: "7px",
+            width: "29%",
+            outline: "none",
+          }}
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+        >
+          <option>Select location</option>
+          <option value="pune">Pune</option>
+          <option value="lucknow">Lucknow</option>
+          <option value="mumbai">Mumbai</option>
+          <option value="delhi">Delhi</option>
+          <option value="noida">Noida</option>
+        </select>
+      </Flex>
+      <Flex w={`95%`} m={`auto`} gap={30} mt={`2rem`}>
+        <Box w={`29%`}></Box>
+        <Box w={`29%`}></Box>
+        <Box w={`29%`}>
+          Status: <span style={{ fontWeight: `bold` }}>{`Registered`}</span>
+        </Box>
+      </Flex>
+    </>
+  );
+};
+
+export default AddProject;
