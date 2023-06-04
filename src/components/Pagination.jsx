@@ -7,8 +7,8 @@ const Pagination = () => {
   const [page, setPage] = useState(0);
   const [searchParams,setSearchParams]=useSearchParams()
   const dispatch = useDispatch();
-  const items = useSelector((store) => store.appReducer.projects);
-  const count = new Array(Math.floor(Number(items.length / 10)) + 1).fill(1);
+  const {projects,isAuth} = useSelector((store) => store.appReducer);
+  const count = new Array(Math.floor(Number(projects.length / 10)) + 1).fill(1);
   useEffect(() => {
     let params={page:page}
     setSearchParams(params)
@@ -20,7 +20,7 @@ const Pagination = () => {
         position: "absolute",
         bottom: "0px",
         left: "50%",
-        display: "flex",
+        display: isAuth?'flex':"none",
         gap: "1rem",
         translate: "-50%",
         alignItems:'center',

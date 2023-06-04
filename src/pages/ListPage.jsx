@@ -17,6 +17,7 @@ import * as types from "../redux/actionType";
 import {  useSearchParams } from "react-router-dom";
 const ListPage = () => {
   const [serachParams,setSearchParams]=useSearchParams('')
+  const [selectedVal,setSelectedVal]=useState('')
   const projects = useSelector((store) => store.appReducer.projects);
   const page=serachParams.get('page')
   const [search, setSearch] = useState("");
@@ -59,6 +60,26 @@ const ListPage = () => {
       }
     }
   };
+
+  const handleSelectedSort=async(e)=>{
+    setSelectedVal(e.target.value)
+    if(selectedVal){
+      const token =localStorage.getItem('projectTrackerToken')
+      console.log(selectedVal)
+      try {
+        let res = await fetch(
+          `http://localhost:8080/getprojectsBySort?sortVal=${selectedVal}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        let data = await res.json();
+        dispatch({ type: types.SUCCESS_PROJECT_LIST, payload: data });
+      } catch (error) {
+        dispatch({ type: types.FAILURE_PROJECT_LIST, error });
+      }
+    }
+  }
   useEffect(() => {
     if (projects.length === 0) {
       dispatch(getProjects());
@@ -92,11 +113,15 @@ const ListPage = () => {
         </Flex>
         <Flex align={`center`} gap={`1rem`}>
           <Text color={`gray`}>Sort by:</Text>
-          <select style={{ fontWeight: "400" }}>
+          <select style={{ fontWeight: "400" }} onChange={handleSelectedSort}>
             <option>Select option</option>
             <option value={`priority`}>Priority</option>
-            <option value={`priority`}>Priority</option>
-            <option value={`priority`}>Priority</option>
+            <option value={`reason`}>Reason</option>
+            <option value={`type`}>Type</option>
+            <option value={`division`}>Division</option>
+            <option value={`department`}>Department</option>
+            <option value={`location`}>Location</option>
+            <option value={`status`}>Status</option>
           </select>
         </Flex>
       </Flex>
