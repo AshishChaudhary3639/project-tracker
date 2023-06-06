@@ -48,7 +48,7 @@ const ListPage = () => {
       const token =localStorage.getItem('projectTrackerToken')
       try {
         let res = await fetch(
-          `http://localhost:8080/search?query=${search}`,
+          `https://good-gold-buffalo-fez.cyclic.app/search?query=${search}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -68,7 +68,7 @@ const ListPage = () => {
       console.log(selectedVal)
       try {
         let res = await fetch(
-          `http://localhost:8080/getprojectsBySort?sortVal=${selectedVal}`,
+          `https://good-gold-buffalo-fez.cyclic.app/getprojectsBySort?sortVal=${selectedVal}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

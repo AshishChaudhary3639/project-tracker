@@ -46,7 +46,7 @@ const AddProject = () => {
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFzaGlzaEBnbWFpbC5jb20iLCJpYXQiOjE2ODU2MDU0NjN9.YXJxqkisgB1w8vMEmODKOZFZxpRFSl6jPrUi0vSuYac";
 
       axios
-        .post("http://localhost:8080/createproject", payload, {
+        .post("https://good-gold-buffalo-fez.cyclic.app/createproject", payload, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {

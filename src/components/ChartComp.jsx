@@ -9,12 +9,12 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getProjects } from "../redux/action";
 
-const ChartComp = () => {
+const ChartComp = (department) => {
   const chartRef = useRef(null);
   const projects = useSelector((store) => store.appReducer.projects);
   const [uniqueValues, setUniqueValues] = useState();
   const dispatch = useDispatch();
- 
+ console.log('dep',department)
   useEffect(() => {
     const ctx = chartRef.current.getContext("2d");
     Chart.register(BarController, BarElement, LinearScale, CategoryScale);
