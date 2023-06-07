@@ -121,9 +121,7 @@ const AllRoute = () => {
               <Route
                 path="/"
                 element={
-                  <ReqAuth>
                     <HomePage />
-                  </ReqAuth>
                 }
               />
               <Route
