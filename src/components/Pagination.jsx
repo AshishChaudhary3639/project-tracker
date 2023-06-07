@@ -8,7 +8,7 @@ const Pagination = () => {
   const [searchParams,setSearchParams]=useSearchParams()
   const dispatch = useDispatch();
   const {projects,isAuth} = useSelector((store) => store.appReducer);
-  const count = new Array(Math.floor(Number(projects.length?projects.length:0/ 10)) + 1).fill(1);
+  const count = new Array(Math.floor(Number(projects.length/ 10)) + 1).fill(1);
   useEffect(() => {
     let params={page:page}
     setSearchParams(params)
