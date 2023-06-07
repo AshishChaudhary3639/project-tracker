@@ -14,7 +14,7 @@ const AddProject = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [location, setLocation] = useState("");
-  const toast = useToast()
+  const toast = useToast();
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
@@ -46,37 +46,36 @@ const AddProject = () => {
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFzaGlzaEBnbWFpbC5jb20iLCJpYXQiOjE2ODU2MDU0NjN9.YXJxqkisgB1w8vMEmODKOZFZxpRFSl6jPrUi0vSuYac";
 
       axios
-        .post("https://good-gold-buffalo-fez.cyclic.app/createproject", payload, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((res) => {
-          console.log(res.data.success)
-          if(res.data.success==="project add successfuly"){
-            toast({
-              title: 'Project added.',
-              description: "We've added your project",
-              status: 'success',
-              duration: 9000,
-              isClosable: true,
-            })
-          }else{
-            toast({
-              title: 'Project not added.',
-              description: "We could not your project",
-              status: 'error',
-              duration: 9000,
-              isClosable: true,
-            })
+        .post(
+          "https://good-gold-buffalo-fez.cyclic.app/createproject",
+          payload,
+          {
+            headers: { Authorization: `Bearer ${token}` },
           }
+        )
+        .then((res) => {
+          toast({
+            title: "Project added.",
+            description: "We've added your project",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+          });
         })
         .catch((e) => {
-          console.log(e)
+          toast({
+            title: "Project not added.",
+            description: "We could not your project",
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+          });
+          console.log(e);
         });
     }
   };
   return (
     <>
-    
       <Flex w={`95%`} m={`auto`} justify={`space-between`} mt={`1rem`}>
         <Input
           value={projectName}
