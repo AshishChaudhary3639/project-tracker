@@ -116,9 +116,9 @@ const AddProject = () => {
         >
           <option>Select Reason</option>
           <option value="business">For Business</option>
-          <option value="education">Education</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
+          <option value="education">For Education</option>
+          <option value="dealership">For Dealership</option>
+          <option value="transport">For Transport</option>
         </select>
         <select
           style={{
@@ -131,11 +131,9 @@ const AddProject = () => {
           value={type}
           onChange={(e) => setType(e.target.value)}
         >
-          <option>Select Internal</option>
+          <option>Select Type</option>
           <option value="internal">Internal</option>
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
+          <option value="external">Extarnal</option>
         </select>
         <select
           style={{
@@ -150,9 +148,8 @@ const AddProject = () => {
         >
           <option>Select Filters</option>
           <option value="filter">Filters</option>
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
+          <option value="compresser">Compresser</option>
+          <option value="pumps">Pumps</option>
         </select>
       </Flex>
       <Flex w={`95%`} m={`auto`} gap={30} mt={`2rem`}>
@@ -188,7 +185,6 @@ const AddProject = () => {
           <option value="high">High</option>
           <option value="medium">Medium</option>
           <option value="low">Low</option>
-          <option value="option3">Option 3</option>
         </select>
         <select
           style={{
@@ -203,9 +199,8 @@ const AddProject = () => {
         >
           <option>Select Department</option>
           <option value="strategy">Strategy</option>
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
+          <option value="finance">Finance</option>
+          <option value="hr">HR </option>
         </select>
       </Flex>
       <Flex w={`95%`} m={`auto`} gap={30} mt={`2rem`}>
