@@ -1,9 +1,8 @@
-
 import React from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router";
 import { Box, Flex, Image, VStack } from "@chakra-ui/react";
 import { IoIosArrowBack } from "react-icons/io";
-import Dashboard from '../pages/Dashboard';
+import Dashboard from "../pages/Dashboard";
 import AddProject from "../pages/AddProject";
 import Login from "../pages/Login";
 import ListPage from "../pages/ListPage";
@@ -108,18 +107,25 @@ const AllRoute = () => {
           </Flex>
           <Box
             border={`1px solid lightgray`}
-            h={location.pathname==='/login'?"70%":"80%"}
+            h={location.pathname === "/login" ? "70%" : "80%"}
             position={`absolute`}
             zIndex={`999`}
-            w={location.pathname==='/login'?"40%":"90%"}
+            w={location.pathname === "/login" ? "40%" : "90%"}
             bgColor={`#ffff`}
-            top={location.pathname==='/login'?"20%":"15%"}
-            left={location.pathname==='/login'?"30%":"5%"}
+            top={location.pathname === "/login" ? "20%" : "15%"}
+            left={location.pathname === "/login" ? "30%" : "5%"}
             borderRadius={`10px`}
-            overflow={location.pathname==='/login'?'':"auto"}
+            overflow={location.pathname === "/login" ? "" : "auto"}
           >
             <Routes>
-                <Route path="/" element={<HomePage/>}/>
+              <Route
+                path="/"
+                element={
+                  <ReqAuth>
+                    <HomePage />
+                  </ReqAuth>
+                }
+              />
               <Route
                 path="/dashboard"
                 element={
