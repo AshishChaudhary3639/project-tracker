@@ -9,82 +9,72 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { getProjects, updateProjectsStatus } from "../redux/action";
 import * as types from "../redux/actionType";
-import {  useSearchParams } from "react-router-dom";
+import axios from "axios";
+import { getProjects } from "../redux/action";
 const ListPage = () => {
-  const [serachParams,setSearchParams]=useSearchParams('')
-  const [selectedVal,setSelectedVal]=useState('')
-  const projects = useSelector((store) => store.appReducer.projects);
-  const page=serachParams.get('page')
+  const { projects, currentPage } = useSelector(
+    (store) => store.appReducer.projects
+  );
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
-  console.log("page",page);
 
-  const handleUpdateStatus=({e},str)=>{
-    let statusVal
-    if(str==='start'){
-      statusVal='Running'
-    }else if(str==='close'){
-      statusVal='Closed'
-    }else if(str==='cancel'){
-      statusVal='Cancelled'
+  const handleUpdateStatus = async ({ e }, str) => {
+    let statusVal;
+    if (str === "start") {
+      statusVal = "Running";
+    } else if (str === "close") {
+      statusVal = "Closed";
+    } else if (str === "cancel") {
+      statusVal = "Cancelled";
     }
-    let params={
-        id:e._id,
-        status:statusVal,
-        page:page
-      }
-      console.log(params)
-    dispatch(updateProjectsStatus(params))
-
-  }
+    try {
+      await axios.patch(
+        `http://localhost:8080/getprojects/${e._id}`,
+        { statusVal },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              "projectTrackerToken"
+            )}`,
+          },
+        }
+      );
+      dispatch(getProjects(currentPage));
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleInputSearch = async (e) => {
     setSearch(e.target.value);
     if (search) {
-      const token =localStorage.getItem('projectTrackerToken')
+      const token = localStorage.getItem("projectTrackerToken");
       try {
-        let res = await fetch(
-          `https://good-gold-buffalo-fez.cyclic.app/search?query=${search}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        let data = await res.json();
-        dispatch({ type: types.SUCCESS_PROJECT_LIST, payload: data });
+        let res = await fetch(`http://localhost:8080/search?query=${search}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        let projects = await res.json();
+        dispatch({ type: types.SUCCESS_PROJECT_LIST, payload: { projects } });
       } catch (error) {
         dispatch({ type: types.FAILURE_PROJECT_LIST, error });
       }
     }
   };
 
-  const handleSelectedSort=async(e)=>{
-    setSelectedVal(e.target.value)
-    if(selectedVal){
-      const token =localStorage.getItem('projectTrackerToken')
-      console.log(selectedVal)
+  const handleSelectedSort = async (e) => {
+    let sortOption=e.target.value;
+    if (sortOption) {
       try {
-        let res = await fetch(
-          `https://good-gold-buffalo-fez.cyclic.app/getprojectsBySort?sortVal=${selectedVal}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        let data = await res.json();
-        dispatch({ type: types.SUCCESS_PROJECT_LIST, payload: data });
+        dispatch(getProjects(currentPage,sortOption));
       } catch (error) {
         dispatch({ type: types.FAILURE_PROJECT_LIST, error });
       }
     }
-  }
-  useEffect(() => {
-    if (projects.length === 0) {
-      dispatch(getProjects());
-    }
-  }, [dispatch, projects.length]);
+  };
+
   return (
     <>
       <Flex
@@ -126,12 +116,7 @@ const ListPage = () => {
         </Flex>
       </Flex>
 
-      <Table
-        size="sm"
-        w={`100%`}
-        m={`1rem auto`}
-        textAlign={"left"}
-      >
+      <Table size="sm" w={`100%`} m={`1rem auto`} textAlign={"left"}>
         <Thead>
           <Tr>
             <Th>Project Name</Th>
@@ -176,7 +161,7 @@ const ListPage = () => {
                       color: `white`,
                       padding: `0px 7px`,
                     }}
-                    onClick={()=>handleUpdateStatus({e},'start')}
+                    onClick={() => handleUpdateStatus({ e }, "start")}
                   >
                     Start
                   </button>{" "}
@@ -186,7 +171,7 @@ const ListPage = () => {
                       border: `1px solid lightgray`,
                       padding: `0px 7px`,
                     }}
-                    onClick={()=>handleUpdateStatus({e},'close')}
+                    onClick={() => handleUpdateStatus({ e }, "close")}
                   >
                     Close
                   </button>
@@ -196,7 +181,7 @@ const ListPage = () => {
                       border: `1px solid lightgray`,
                       padding: `0px 7px`,
                     }}
-                    onClick={()=>handleUpdateStatus({e},'cancel')}
+                    onClick={() => handleUpdateStatus({ e }, "cancel")}
                   >
                     Cancel
                   </button>

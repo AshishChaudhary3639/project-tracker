@@ -1,29 +1,58 @@
-import * as types from './actionType'
-import axios from 'axios'
-const getProjects=(page=0)=>(dispatch)=>{
-    const token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFzaGlzaEBnbWFpbC5jb20iLCJpYXQiOjE2ODU2MDU0NjN9.YXJxqkisgB1w8vMEmODKOZFZxpRFSl6jPrUi0vSuYac'
-    dispatch({type:types.REQUEST_PROJECT_LIST})
-    return axios.get(`https://good-gold-buffalo-fez.cyclic.app/getprojects?page=${page}`,{
-        headers:{Authorization:`Bearer ${token}`}
-    }).then((res)=>{
-        dispatch({type:types.SUCCESS_PROJECT_LIST,payload:res.data})
-    }).catch((e)=>{
-        dispatch({type:types.FAILURE_PROJECT_LIST,payload:e})
-    })
-    // console.log(payload)
-}
+import * as types from "./actionType";
+import axios from "axios";
+// Action Creators
 
-const updateProjectsStatus=({id,status,page})=>(dispatch)=>{
-    const token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFzaGlzaEBnbWFpbC5jb20iLCJpYXQiOjE2ODU2MDU0NjN9.YXJxqkisgB1w8vMEmODKOZFZxpRFSl6jPrUi0vSuYac'
-    dispatch({type:types.REQUEST_PROJECT_LIST})
-    return axios.patch(`https://good-gold-buffalo-fez.cyclic.app/getprojects/${id}`,{status,page},{
-        headers:{Authorization:`Bearer ${token}`}
-    }).then((res)=>{
-        dispatch({type:types.SUCCESS_PROJECT_LIST,payload:res.data})
-    }).catch((e)=>{
-        dispatch({type:types.FAILURE_PROJECT_LIST,payload:e})
-    })
-    // console.log(payload)
-}
 
-export {getProjects,updateProjectsStatus}
+// Async Action Creator
+export const getProjects = (currentPage,sortOption='projectName') => (dispatch) => {
+  dispatch({ type: types.REQUEST_PROJECT_LIST });
+  // Make the API call to fetch paginated items
+  return axios
+    .get(`http://localhost:8080/getprojects?page=${currentPage}&selectedVal=${sortOption}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("projectTrackerToken")}`,
+      },
+    })
+    .then((data) => {
+        console.log(data.data.projects);
+      const { projects, currentPage, totalPages } = data.data;
+      dispatch({
+        type: types.SUCCESS_PROJECT_LIST,
+        payload: {
+          projects,
+          currentPage,
+          totalPages,
+        },
+      });
+    })
+    .catch((error) => {
+        dispatch({ type: types.FAILURE_PROJECT_LIST,payload:error });
+    });
+};
+
+// const updateProjectsStatus =
+//   ({ id, status, page }) =>
+//   (dispatch) => {
+//     dispatch({ type: types.REQUEST_PROJECT_LIST });
+//     return axios
+//       .patch(
+//         `http://localhost:8080/getprojects/${id}`,
+//         { status },
+//         {
+//           headers: {
+//             Authorization: `Bearer ${localStorage.getItem(
+//               "projectTrackerToken"
+//             )}`,
+//           },
+//         }
+//       )
+//       .then(() => {
+//         getProjects(page)
+//       })
+//       .catch((e) => {
+//         dispatch({ type: types.FAILURE_PROJECT_LIST, payload: e });
+//       });
+//     // console.log(payload)
+//   };
+
+// export { updateProjectsStatus };

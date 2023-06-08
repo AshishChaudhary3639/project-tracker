@@ -1,44 +1,55 @@
-import React, { useEffect, useState } from "react";
-import {useSearchParams} from 'react-router-dom'
-import { Box } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import { Box, Button } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjects } from "../redux/action";
 const Pagination = () => {
-  const [page, setPage] = useState(0);
-  const [searchParams,setSearchParams]=useSearchParams()
   const dispatch = useDispatch();
-  const {projects,isAuth} = useSelector((store) => store.appReducer);
-  const count = new Array(Math.floor(Number(projects.length/ 10)) + 1).fill(1);
-  useEffect(() => {
-    let params={page:page}
-    setSearchParams(params)
-    dispatch(getProjects(page));
-  }, [dispatch, page,setSearchParams]);
+  const {projects,isAuth,totalPages,currentPage} = useSelector((store) => store.appReducer);
+ 
+  console.log(currentPage)
+  useEffect(()=>{
+    if(projects.length===0){
+      dispatch(getProjects(currentPage))
+    }
+  },[dispatch,projects,currentPage])
+
+  const handlePageChange=(page)=>{
+    dispatch(getProjects(page))
+  }
   return (
     <div
       style={{
-        position: "absolute",
-        bottom: "0px",
+        position: "fixed",
+        bottom: "1px",
         left: "50%",
         display: isAuth?'flex':"none",
         gap: "1rem",
-        translate: "-50%",
         alignItems:'center',
+        color:'red'
       }}
     >
       <Box>{`<<`}</Box>
-      {count?.map((_, i) => (
+      
         <Box
           color={`red`}
-          key={i}
-          onClick={() => setPage(i)}
+          
           borderRadius="50%"
           padding="5px"
-          _hover={{ cursor: "pointer",bgColor:"teal", borderRadius:"50%",padding:"5px" }}
+          
         >
-          {i + 1}
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+          <Button
+            key={page}
+            onClick={() => handlePageChange(page)}
+            disabled={page === currentPage}
+            p='0px 1rem'
+            _hover={{ cursor: "pointer",bgColor:"teal", borderRadius:"50%",padding:"5px" }}
+          >
+            {page}
+          </Button>
+        ))}
         </Box>
-      ))}
+   
       <Box>{`>>`}</Box>
     </div>
   );

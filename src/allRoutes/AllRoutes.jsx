@@ -6,9 +6,9 @@ import Dashboard from "../pages/Dashboard";
 import AddProject from "../pages/AddProject";
 import Login from "../pages/Login";
 import ListPage from "../pages/ListPage";
-import Pagination from "../components/Pagination";
 import ReqAuth from "../pages/ReqAuth";
 import HomePage from "../pages/HomePage";
+import Pagination from "../components/Pagination";
 const AllRoute = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -118,12 +118,7 @@ const AllRoute = () => {
             overflow={location.pathname === "/login" ? "" : "auto"}
           >
             <Routes>
-              <Route
-                path="/"
-                element={
-                    <HomePage />
-                }
-              />
+              <Route path="/" element={<HomePage />} />
               <Route
                 path="/dashboard"
                 element={
@@ -137,6 +132,7 @@ const AllRoute = () => {
                 element={
                   <ReqAuth>
                     <ListPage />
+                    <Pagination />
                   </ReqAuth>
                 }
               />
@@ -151,7 +147,6 @@ const AllRoute = () => {
               <Route path="/login" element={<Login />} />
             </Routes>
           </Box>
-          <Pagination />
         </Box>
       </Flex>
     </>

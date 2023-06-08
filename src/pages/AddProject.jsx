@@ -42,17 +42,12 @@ const AddProject = () => {
         endDate,
         location,
       };
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFzaGlzaEBnbWFpbC5jb20iLCJpYXQiOjE2ODU2MDU0NjN9.YXJxqkisgB1w8vMEmODKOZFZxpRFSl6jPrUi0vSuYac";
+      const token = localStorage.getItem("projectTrackerToken");
 
       axios
-        .post(
-          "https://good-gold-buffalo-fez.cyclic.app/createproject",
-          payload,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        )
+        .post("http://localhost:8080/createproject", payload, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
         .then((res) => {
           toast({
             title: "Project added.",
@@ -72,6 +67,15 @@ const AddProject = () => {
           });
           console.log(e);
         });
+    }
+    else{
+      toast({
+        title: "Project not added.",
+        description: "Every input feild are required",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
     }
   };
   return (
