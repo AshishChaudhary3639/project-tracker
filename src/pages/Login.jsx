@@ -19,7 +19,6 @@ function Login() {
   const navigate=useNavigate()
   const location=useLocation()
   const commingFrom=location.state?.from?.pathname || '/dashboard'
-  console.log('comming',commingFrom)
   const handleSubmit=async()=>{
     if(email&&password){
       let payload={email,password}

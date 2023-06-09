@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Box, Button, Flex, Input, useToast } from "@chakra-ui/react";
-import { useDispatch } from "react-redux";
-import { addProject } from "../redux/action";
 import axios from "axios";
 const AddProject = () => {
   const [projectName, setProjectName] = useState("");
@@ -15,7 +13,6 @@ const AddProject = () => {
   const [endDate, setEndDate] = useState("");
   const [location, setLocation] = useState("");
   const toast = useToast();
-  const dispatch = useDispatch();
 
   const handleSubmit = () => {
     if (
@@ -45,7 +42,7 @@ const AddProject = () => {
       const token = localStorage.getItem("projectTrackerToken");
 
       axios
-        .post("http://localhost:8080/createproject", payload, {
+        .post("hhttps://good-gold-buffalo-fez.cyclic.app/createproject", payload, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {

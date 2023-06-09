@@ -5,23 +5,20 @@ import {
   BarElement,
   LinearScale,
   CategoryScale,
+  Slice
 } from "chart.js";
-import { useDispatch, useSelector } from "react-redux";
-import { getProjects } from "../redux/action";
 
-const ChartComp = (department) => {
+const ChartComp = (department,uniqDepArr) => {
   const chartRef = useRef(null);
-  const projects = useSelector((store) => store.appReducer.projects);
   const [uniqueValues, setUniqueValues] = useState();
-  const dispatch = useDispatch();
- console.log('dep',department)
+ console.log('dep',uniqDepArr)
   useEffect(() => {
     const ctx = chartRef.current.getContext("2d");
     Chart.register(BarController, BarElement, LinearScale, CategoryScale);
     new Chart(ctx, {
       type: "bar",
       data: {
-        labels: ['strategy','B','C','D'],
+        labels: uniqDepArr,
         datasets: [
           {
             label: "data set1",
@@ -46,7 +43,7 @@ const ChartComp = (department) => {
         },
       },
     });
-  }, [uniqueValues]);
+  }, [uniqueValues,uniqDepArr]);
   return <canvas ref={chartRef}></canvas>;
 };
 

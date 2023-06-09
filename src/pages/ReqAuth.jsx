@@ -6,7 +6,6 @@ const ReqAuth = ({children}) => {
     const location =useLocation()
 
     const auth=useSelector((store)=>store.appReducer.isAuth)
-    console.log("Auth",auth);
     if(!auth){
         return <Navigate to="/login" state={{from:location}} replace/>
     }

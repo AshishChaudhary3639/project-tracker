@@ -33,7 +33,7 @@ const ListPage = () => {
     }
     try {
       await axios.patch(
-        `http://localhost:8080/getprojects/${e._id}`,
+        `https://good-gold-buffalo-fez.cyclic.app/getprojects/${e._id}`,
         { statusVal },
         {
           headers: {
@@ -53,7 +53,7 @@ const ListPage = () => {
     if (search) {
       const token = localStorage.getItem("projectTrackerToken");
       try {
-        let res = await fetch(`http://localhost:8080/search?query=${search}`, {
+        let res = await fetch(`https://good-gold-buffalo-fez.cyclic.app/search?query=${search}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         let projects = await res.json();
